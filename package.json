@@ -1,0 +1,8 @@
+{
+  "name": "hexo-transliterator",
+  "version": "0.0.1",
+  "main": "index",
+  "dependencies": {
+    "transliteration.cyr": "^1.0.5"
+  }
+}
