@@ -7,6 +7,7 @@ function translit(url) {
 
 hexo.extend.generator.register('post', function(locals) {
   return locals.posts.map(function(post){
+    post.slug = translit(post.slug);
     return {
       path: translit(post.path),
       data: post,
@@ -17,6 +18,7 @@ hexo.extend.generator.register('post', function(locals) {
 
 hexo.extend.generator.register('page', function(locals) {
   return locals.pages.map(function(page){
+    page.slug = translit(page.slug);
     return {
       path: translit(page.path),
       data: page,
