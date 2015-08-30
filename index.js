@@ -1,7 +1,25 @@
-var transliteration = require('transliteration.cyr');
+var translit_table = require('./translit');
 
-function translit(url) {
-  return transliteration.transliterate(url).toLowerCase();
+function translit(text) {
+  text = text.toLowerCase();
+  var result = '';
+  var prev = '';
+  for (var i=0; i < text.length; i++) {
+    if (/\w/.test(text[i]) == false) {
+      if (translit_table[text[i]] != undefined) {
+        result += translit_table[text[i]];
+        prev = text[i];
+      } else {
+        if (prev != "-") {
+          result += "-";
+          prev = "-";
+        }
+      }
+    } else {
+      result += text[i];
+    }
+  }
+  return result;
 }
 
 
@@ -9,7 +27,7 @@ hexo.extend.generator.register('post', function(locals) {
   return locals.posts.map(function(post){
     post.slug = translit(post.slug);
     return {
-      path: translit(post.path),
+      path: post.path,
       data: post,
       layout: 'post'
     };
@@ -20,29 +38,9 @@ hexo.extend.generator.register('page', function(locals) {
   return locals.pages.map(function(page){
     page.slug = translit(page.slug);
     return {
-      path: translit(page.path),
+      path: page.path,
       data: page,
       layout: 'page'
     };
-  });
-});
-
-hexo.extend.generator.register('category', function(locals) {
-  return locals.categories.map(function(category){
-    return {
-      path: translit(category.path),
-      data: category,
-      layout: 'category'
-    };
-  });
-});
-
-hexo.extend.generator.register('tag', function(locals) {
-  return locals.tags.map(function(tag) {
-    return {
-      path: translit(tag.path),
-      data: tag,
-      layout: 'tag'
-    }
   });
 });
