@@ -1,25 +1,28 @@
 var translit_table = require('./translit');
 
 function translit(text) {
-  text = text.toLowerCase();
-  var result = '';
-  var prev = '';
-  for (var i=0; i < text.length; i++) {
-    if (/\w/.test(text[i]) == false) {
-      if (translit_table[text[i]] != undefined) {
-        result += translit_table[text[i]];
-        prev = text[i];
-      } else {
-        if (prev != "-") {
-          result += "-";
-          prev = "-";
+  if (text) {
+    text = text.toLowerCase();
+    var result = '';
+    var prev = '';
+    for (var i=0; i < text.length; i++) {
+      if (/\w/.test(text[i]) == false) {
+        if (translit_table[text[i]] != undefined) {
+          result += translit_table[text[i]];
+          prev = text[i];
+        } else {
+          if (prev != "-") {
+            result += "-";
+            prev = "-";
+          }
         }
+      } else {
+        result += text[i];
       }
-    } else {
-      result += text[i];
     }
+    return result;
   }
-  return result;
+  return text;
 }
 
 
